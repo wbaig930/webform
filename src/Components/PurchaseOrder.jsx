@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./PurchaseOrder.css"; // your own CSS
 
-export default function PRForm() {
+export default function PRForm({ prData, onBack }) {
   // Header state
   const [header, setHeader] = useState({
     CreateDate: "",
@@ -399,6 +399,10 @@ export default function PRForm() {
       </button>
 
       <button type="submit" className="submit-btn">Submit Request</button>
+      <button onClick={onBack} className="back-btn">← Back</button>
+      <form className="pr-form">
+        {/* render header fields and rows as before */}
+      </form>
     </form>
   );
 }

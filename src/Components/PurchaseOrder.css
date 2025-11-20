@@ -62,6 +62,7 @@
 }
 
 button[type="button"] {
+  font-size: 16px;;
   padding: 8px 15px;
   margin: 10px 0;
   background-color: #3498db;
@@ -76,6 +77,7 @@ button[type="button"]:hover {
 }
 
 button[type="submit"] {
+  font-size: 16px;
   padding: 8px 20px;
   background-color: #2ecc71;
   color: #fff;
@@ -165,4 +167,14 @@ button[type="submit"]:hover {
 }
 .submit-btn{
   margin-left: 10px;
+}
+.back-btn {
+  font-size: 16px;
+  margin-left: 10px;
+  padding: 8px 15px;
+  background-color: #6c757d;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

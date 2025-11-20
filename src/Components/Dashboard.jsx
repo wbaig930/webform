@@ -42,52 +42,55 @@ export default function Dashboard({ username, onLogout }) {
       case "Dashboard":
         return (
           <div>
-            <h2>Welcome to SAP Portal, {username}</h2>
+            <h2 className="dash-heading">Welcome to SAP Portal, {username}</h2>
 
             {/* Show only for Approval User */}
             {username === "Approval User" && (
               <div className="pr-box-container">
                 <h3>Pending Purchase Requests</h3>
 
-                {prList.length === 0 ? (
-                  <p>No pending purchase requests.</p>
-                ) : (
-                  prList.map((pr, idx) => (
-                    <div key={idx} className="pr-box">
-                      <p>
-                        <strong>DocEntry:</strong> {pr.docEntry}
-                      </p>
-                      <p>
-                        <strong>Request Name:</strong> {pr.creator}
-                      </p>
-                      <p>
-                        <strong>Create Date:</strong> {pr.createDate}
-                      </p>
-                      <p>
-                        <strong>Create Time:</strong> {pr.createTime}
-                      </p>
-                      <p>
-                        <strong>Requestor Name:</strong> {pr.u_ReqName}
-                      </p>
-                      <p>
-                        <strong>Designation:</strong> {pr.u_DESG || "N/A"}
-                      </p>
+                {prList.map((pr, idx) => (
+                  <div key={idx} className="pr-box">
+                    <p>
+                      <strong>DocEntry:</strong> {pr.docEntry}
+                    </p>
+                    <p>
+                      <strong>Request Name:</strong> {pr.creator}
+                    </p>
+                    <p>
+                      <strong>Create Date:</strong> {pr.createDate}
+                    </p>
+                    <p>
+                      <strong>Create Time:</strong> {pr.createTime}
+                    </p>
+                    <p>
+                      <strong>Requestor Name:</strong> {pr.u_ReqName}
+                    </p>
+                    <p>
+                      <strong>Designation:</strong> {pr.u_DESG || "N/A"}
+                    </p>
+
+                    {/* BUTTONS */}
+                    <div className="pr-actions">
+                      <button className="view-btn">View Details</button>
+                      <button className="approve-btn">Approve</button>
+                      <button className="reject-btn">Reject</button>
                     </div>
-                  ))
-                )}
+                  </div>
+                ))}
               </div>
             )}
           </div>
         );
 
       case "Sales":
-        return <h2>Sales Module Coming Soon</h2>;
+        return <h2 className="dash-heading">Sales Module Coming Soon</h2>;
 
       case "Reports":
-        return <h2>Reports Module Coming Soon</h2>;
+        return <h2 className="dash-heading">Reports Module Coming Soon</h2>;
 
       default:
-        return <h2>Welcome to SAP Portal, {username}</h2>;
+        return <h2 className="dash-heading">Welcome to SAP Portal, {username}</h2>;
     }
   };
 
