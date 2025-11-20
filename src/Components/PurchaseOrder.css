@@ -107,3 +107,59 @@ button[type="submit"]:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.items-scroll {
+  overflow-x: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  max-width: 100%;
+}
+
+/* Header row */
+.row-header {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 40px;
+  font-weight: bold;
+  background: #f1f1f1;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  min-width: 1400px;
+}
+
+.row-header span {
+  min-width: 120px;
+  display: inline-block;
+}
+
+/* Rows */
+.row-item {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 8px 0;
+  min-width: 1400px;
+  border-bottom: 1px solid #eee;
+  background-clip: padding-box;
+}
+
+.row-item input {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 120px;
+}
+
+.remove-btn {
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.remove-btn:hover {
+  background: #b52b2b;
+}

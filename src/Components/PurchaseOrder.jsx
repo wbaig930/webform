@@ -248,97 +248,132 @@ export default function PRForm() {
 
       {/* Row-level items */}
       <h3>Items</h3>
-      {header.DocumentLines.map((row, idx) => (
-        <div key={idx} className="row-item">
-          <input 
-            type="text"
-            name="LineId"
-            value={row.LineId || idx + 1}
-            disabled
-            placeholder="Line ID"
-          />
-          <input
-            type="text"
-            name="U_CODE"
-            value={row.U_CODE}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Item Code"
-          />
-          <input
-            type="text"
-            name="U_NAME"
-            value={row.U_NAME}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Item Name"
-          />
-          <input
-            type="text"
-            name="U_CMPS"
-            value={row.U_CMPS}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Components"
-          />
-          <input
-            type="number"
-            name="U_QNTY"
-            value={row.U_QNTY}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Quantity"
-          />
-          <input
-            type="number"
-            name="U_PRCE"
-            value={row.U_PRCE}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Price"
-          />
-          <input
-            type="number"
-            name="U_TOTL"
-            value={row.U_TOTL}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Total"
-          />
-          <input
-            type="text"
-            name="U_JUST"
-            value={row.U_JUST}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Justification"
-          />
-          <input
-            type="text"
-            name="U_ABGT "
-            value={row.U_ABGT}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Approval Budget"
-          />
-          <input
-            type="text"
-            name="U_BREF"
-            value={row.U_BREF}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Budget Reference"
-          />
-          <input
-            type="text"
-            name="U_PRJT"
-            value={row.U_PRJT}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Project"
-          />
-          <input
-            type="text"
-            name="U_FRWD"
-            value={row.U_FRWD}
-            onChange={(e) => handleRowChange(idx, e)}
-            placeholder="Forwarded To"
-          />
-          <button type="button" onClick={() => removeRow(idx)}>
-            Remove
-          </button>
+
+      <div className="items-scroll">
+        <div className="row-header">
+          <span>Line ID</span>
+          <span>Item Code</span>
+          <span>Item Name</span>
+          <span>Components</span>
+          <span>Quantity</span>
+          <span>Price</span>
+          <span>Total</span>
+          <span>Justification</span>
+          <span>Approval Budget</span>
+          <span>Budget Ref</span>
+          <span>Project</span>
+          <span>Forwarded To</span>
+          <span>Action</span>
         </div>
-      ))}
+        {header.DocumentLines.map((row, idx) => (
+          <div key={idx} className="row-item">
+            <input
+              type="text"
+              name="LineId"
+              value={row.LineId || idx + 1}
+              disabled
+              placeholder="Line ID"
+            />
+
+            <input
+              type="text"
+              name="U_CODE"
+              value={row.U_CODE}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Item Code"
+            />
+
+            <input
+              type="text"
+              name="U_NAME"
+              value={row.U_NAME}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Item Name"
+            />
+
+            <input
+              type="text"
+              name="U_CMPS"
+              value={row.U_CMPS}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Components"
+            />
+
+            <input
+              type="number"
+              name="U_QNTY"
+              value={row.U_QNTY}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Quantity"
+            />
+
+            <input
+              type="number"
+              name="U_PRCE"
+              value={row.U_PRCE}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Price"
+            />
+
+            <input
+              type="number"
+              name="U_TOTL"
+              value={row.U_TOTL}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Total"
+            />
+
+            <input
+              type="text"
+              name="U_JUST"
+              value={row.U_JUST}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Justification"
+            />
+
+            <input
+              type="text"
+              name="U_ABGT"
+              value={row.U_ABGT}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Approval Budget"
+            />
+
+            <input
+              type="text"
+              name="U_BREF"
+              value={row.U_BREF}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Budget Reference"
+            />
+
+            <input
+              type="text"
+              name="U_PRJT"
+              value={row.U_PRJT}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Project"
+            />
+
+            <input
+              type="text"
+              name="U_FRWD"
+              value={row.U_FRWD}
+              onChange={(e) => handleRowChange(idx, e)}
+              placeholder="Forwarded To"
+            />
+
+            <button
+              type="button"
+              className="remove-btn"
+              onClick={() => removeRow(idx)}
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
+
       <button type="button" onClick={addRow}>
         Add Item
       </button>
