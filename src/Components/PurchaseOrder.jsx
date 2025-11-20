@@ -244,6 +244,26 @@ export default function PRForm() {
             placeholder="Required Date"
           />
         </div>
+        <div className="form-group">
+          <label>Full Name</label>
+          <input
+            type="text"
+            name="Name"
+            value={header.U_FRST}
+            onChange={handleHeaderChange}
+            placeholder="Name"
+          />
+        </div>
+        <div className="form-group">
+          <label>Designation</label>
+          <input
+            type="text"
+            name="U_DESG"
+            value={header.U_DESG}
+            onChange={handleHeaderChange}
+            placeholder="Designation"
+          />
+        </div>
       </div>
 
       {/* Row-level items */}
@@ -378,7 +398,7 @@ export default function PRForm() {
         Add Item
       </button>
 
-      <button type="submit">Submit Request</button>
+      <button type="submit" className="submit-btn">Submit Request</button>
     </form>
   );
 }

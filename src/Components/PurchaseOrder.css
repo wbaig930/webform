@@ -163,3 +163,6 @@ button[type="submit"]:hover {
 .remove-btn:hover {
   background: #b52b2b;
 }
+.submit-btn{
+  margin-left: 10px;
+}
