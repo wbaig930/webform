@@ -1,0 +1,104 @@
+/* --- LAYOUT --- */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background: #f5f7fa;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px 30px;
+  overflow-y: auto;
+}
+
+/* --- HEADER --- */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.logout-button {
+  background: #d9534f;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.logout-button:hover {
+  background: #c9302c;
+}
+
+/* --- PR BOX SECTION --- */
+.pr-box-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.pr-box-container h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+/* Grid layout for PR cards */
+.pr-box-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* --- INDIVIDUAL PR CARD --- */
+.pr-box {
+  background: #fafafa;
+  padding: 15px 18px;
+  border-left: 4px solid #2c7be5;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease;
+}
+
+.pr-box:hover {
+  transform: translateY(-2px);
+}
+
+.pr-box p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.pr-box strong {
+  color: #000;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .logout-button {
+    align-self: flex-end;
+  }
+}
