@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import PurchaseOrder from "./PurchaseOrder";
+import PRForm from "./PurchaseOrder"; // Import the PRForm component
 import axios from "axios";
 import "./Dashboard.css";
+
 export default function Dashboard({ username, onLogout }) {
   const [module, setModule] = useState("Dashboard");
   const [prList, setPrList] = useState([]);
+  // 1. New state to hold the selected PR data for viewing
+  const [selectedPr, setSelectedPr] = useState(null);
 
   // Fetch PRs only for Approval User
   useEffect(() => {
@@ -25,6 +29,7 @@ export default function Dashboard({ username, onLogout }) {
       let data = res.data;
       if (!Array.isArray(data)) data = [data];
 
+      // Assuming the API returns an array of PR objects that include all necessary fields (like DocEntry)
       setPrList(data);
       console.log("PR list stored:", data);
     } catch (err) {
@@ -33,10 +38,29 @@ export default function Dashboard({ username, onLogout }) {
     }
   };
 
+  // 2. Handler to view PR details
+  const handleViewDetails = (pr) => {
+    setSelectedPr(pr); // Set the selected PR data
+    setModule("PRDetails"); // Change the view module
+  };
+
+  // Handler to go back from PR details (or other sub-modules)
+  const handleBackToDashboard = () => {
+    setSelectedPr(null); // Clear selected PR
+    setModule("Dashboard"); // Go back to main dashboard view
+  };
+
   // Render dashboard content
   const renderModule = () => {
+    // Check for the "PRDetails" case first
+    if (module === "PRDetails" && selectedPr) {
+      // 3. Render the PRForm for viewing/approval
+      return <PRForm prData={selectedPr} onBack={handleBackToDashboard} isViewMode={true} />;
+    }
+
     switch (module) {
       case "PurchaseOrder":
+        // This is likely for *creating* a new PR, you might rename this module or component
         return <PurchaseOrder />;
 
       case "Dashboard":
@@ -57,22 +81,20 @@ export default function Dashboard({ username, onLogout }) {
                     <p>
                       <strong>Request Name:</strong> {pr.creator}
                     </p>
-                    <p>
-                      <strong>Create Date:</strong> {pr.createDate}
-                    </p>
-                    <p>
-                      <strong>Create Time:</strong> {pr.createTime}
-                    </p>
-                    <p>
-                      <strong>Requestor Name:</strong> {pr.u_ReqName}
-                    </p>
+                    {/* ... other PR details ... */}
                     <p>
                       <strong>Designation:</strong> {pr.u_DESG || "N/A"}
                     </p>
 
                     {/* BUTTONS */}
                     <div className="pr-actions">
-                      <button className="view-btn">View Details</button>
+                      {/* 4. Update View Details button to use the handler */}
+                      <button 
+                        className="view-btn"
+                        onClick={() => handleViewDetails(pr)}
+                      >
+                        View Details
+                      </button>
                       <button className="approve-btn">Approve</button>
                       <button className="reject-btn">Reject</button>
                     </div>

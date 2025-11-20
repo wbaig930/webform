@@ -123,7 +123,7 @@ button[type="submit"]:hover {
   flex-wrap: nowrap;
   gap: 40px;
   font-weight: bold;
-  background: #f1f1f1;
+  /* background: #f1f1f1; */
   padding: 8px;
   border-bottom: 1px solid #ddd;
   min-width: 1400px;
