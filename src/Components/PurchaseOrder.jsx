@@ -1,191 +1,269 @@
+// PRForm.jsx
 import React, { useState } from "react";
-import "./PurchaseOrder.css";
-export default function RequisitionForm() {
-  const [items, setItems] = useState([
-    {
-      description: "Laptop",
-      specification: "Intel i7, 16GB RAM",
-      qty: 2,
-      approxCost: 1200,
-      justification: "New hires",
-    },
-    {
-      description: "Office Chair",
-      specification: "Ergonomic, Black",
-      qty: 5,
-      approxCost: 500,
-      justification: "Replacement",
-    },
-  ]);
+import axios from "axios";
+import "./PurchaseOrder.css"; // your own CSS
 
-  const addItem = () => {
-    setItems([
-      ...items,
+export default function PRForm() {
+  // Header state
+  const [header, setHeader] = useState({
+    CreateDate: "",
+    UpdateDate: "",
+    Creator: "",
+    Remark: "",
+    U_FRST: "",
+    U_LAST: "",
+    U_DESG: "",
+    U_ReqName: "",
+    Location: "",
+    Site: "",
+    U_DocDate: "",
+    U_ReqDate: "",
+    DocumentLines: [
       {
-        description: "",
-        specification: "",
-        qty: 1,
-        approxCost: 0,
-        justification: "",
+        U_CODE: "",
+        U_NAME: "",
+        U_CMPS: "",
+        U_QNTY: "",
+        U_PRCE: "",
+        U_TOTL: "",
+        U_JUST: "",
+        U_ABGT: "",
+        U_BREF: "",
+        U_PRJT: "",
+        U_FRWD: "",
       },
-    ]);
+    ],
+  });
+
+  const handleHeaderChange = (e) => {
+    const { name, value } = e.target;
+    setHeader({ ...header, [name]: value });
   };
 
-  const deleteItem = (index) => {
-    const updatedItems = items.filter((_, i) => i !== index);
-    setItems(updatedItems);
+  const handleRowChange = (index, e) => {
+    const { name, value } = e.target;
+    const newLines = [...header.DocumentLines];
+    newLines[index][name] = value;
+    setHeader({ ...header, DocumentLines: newLines });
   };
 
-  const handleChange = (index, field, value) => {
-    const updatedItems = [...items];
-    updatedItems[index][field] =
-      field === "qty" || field === "approxCost" ? Number(value) : value;
-    setItems(updatedItems);
+  const addRow = () => {
+    setHeader({
+      ...header,
+      DocumentLines: [
+        ...header.DocumentLines,
+        {
+          U_CODE: "",
+          U_NAME: "",
+          U_CMPS: "",
+          U_QNTY: "",
+          U_PRCE: "",
+          U_TOTL: "",
+          U_JUST: "",
+          U_ABGT: "",
+          U_BREF: "",
+          U_PRJT: "",
+          U_FRWD: "",
+        },
+      ],
+    });
+  };
+
+  const removeRow = (index) => {
+    const newLines = [...header.DocumentLines];
+    newLines.splice(index, 1);
+    setHeader({ ...header, DocumentLines: newLines });
+  };
+
+  const handleSubmit = async (e) => {
+    debugger;
+    e.preventDefault();
+    const now = new Date();
+    const formatTimeOnly = (date) => date.toTimeString().slice(0, 8); // "HH:mm:ss"
+    // Convert string dates to Date objects
+    const payload = {
+      ...header,
+
+      CreateDate: new Date(header.CreateDate),
+      UpdateDate: new Date(header.UpdateDate),
+      U_DocDate: new Date(header.U_DocDate),
+      U_ReqDate: new Date(header.U_ReqDate),
+      CreateTime: formatTimeOnly(new Date()),
+      UpdateTime: formatTimeOnly(new Date()),
+      DocumentLines: header.DocumentLines.map((row) => ({
+        ...row,
+        U_BREF: row.U_BREF || "N/A", // provide a default value if empty
+        U_QNTY: Number(row.U_QNTY),
+        U_PRCE: Number(row.U_PRCE),
+        U_TOTL: Number(row.U_TOTL),
+        LineId: row.LineId ? Number(row.LineId) : 1,
+      })),
+    };
+
+    debugger;
+    try {
+      console.log(JSON.stringify(payload, null, 2));
+
+      const res = await axios.post(
+        "https://localhost:7183/api/PRForm",
+        payload,
+      );
+
+      console.log(res); // log full response
+      alert(`Success! DocEntry: ${res.data.DocEntry}`);
+    } catch (err) {
+      if (err.response) {
+        // The server responded with a status outside 2xx
+        console.error(
+          "Server responded with error:",
+          err.response.status,
+          err.response.data,
+        );
+      } else if (err.request) {
+        // Request was made but no response
+        console.error("No response from server:", err.request);
+      } else {
+        // Something else happened
+        console.error("Error setting up request:", err.message);
+      }
+      alert("Error submitting form");
+    }
   };
 
   return (
-    <div className="form-container">
-      <h2 className="form-header">📝 Requisition Form</h2>
+    <form onSubmit={handleSubmit} className="pr-form">
+      <h2>Purchase Request Form</h2>
 
-      {/* Section 1: Requester Info */}
-      <div className="card section-card">
-        <h3 className="section-title">Requester Information</h3>
-        <div className="form-grid">
-          <div className="form-field">
-            <label>Name</label>
-            <input type="text" placeholder="Enter Name" />
-          </div>
-          <div className="form-field">
-            <label>Designation</label>
-            <input type="text" placeholder="Enter Designation" />
-          </div>
-          <div className="form-field">
-            <label>Location</label>
-            <input type="text" placeholder="Enter Location" />
-          </div>
-          <div className="form-field">
-            <label>Field Office Address</label>
-            <input type="text" placeholder="Enter Address" />
-          </div>
-          <div className="form-field">
-            <label>Date of Requisition</label>
-            <input type="date" />
-          </div>
-          <div className="form-field">
-            <label>Required Date</label>
-            <input type="date" />
-          </div>
-        </div>
+      {/* Header fields */}
+      <div className="header-section">
+        <input
+          type="date"
+          name="CreateDate"
+          value={header.CreateDate}
+          onChange={handleHeaderChange}
+          placeholder="Create Date"
+        />
+        <input
+          type="date"
+          name="UpdateDate"
+          value={header.UpdateDate}
+          onChange={handleHeaderChange}
+          placeholder="Update Date"
+        />
+        <input
+          type="text"
+          name="Creator"
+          value={header.Creator}
+          onChange={handleHeaderChange}
+          placeholder="Creator"
+        />
+        <input
+          type="text"
+          name="Remark"
+          value={header.Remark}
+          onChange={handleHeaderChange}
+          placeholder="Remark"
+        />
+        <input
+          type="text"
+          name="U_ReqName"
+          value={header.U_ReqName}
+          onChange={handleHeaderChange}
+          placeholder="Requester Name"
+        />
+        <input
+          type="text"
+          name="Location"
+          value={header.Location}
+          onChange={handleHeaderChange}
+          placeholder="Location"
+        />
+        <input
+          type="text"
+          name="Site"
+          value={header.Site}
+          onChange={handleHeaderChange}
+          placeholder="Site"
+        />
+        <input
+          type="date"
+          name="U_DocDate"
+          value={header.U_DocDate}
+          onChange={handleHeaderChange}
+          placeholder="Document Date"
+        />
+        <input
+          type="date"
+          name="U_ReqDate"
+          value={header.U_ReqDate}
+          onChange={handleHeaderChange}
+          placeholder="Required Date"
+        />
       </div>
 
-      {/* Section 2: Item Table */}
-      <div className="card section-card">
-        <h3 className="section-title">Item Details</h3>
-        <div className="table-container">
-          <div className="table-header">
-            <div>Description</div>
-            <div>Complete Specification</div>
-            <div>Quantity</div>
-            <div>Approx Total Cost</div>
-            <div>Justification</div>
-            <div>Action</div>
-          </div>
-          {items.map((item, index) => (
-            <div className="table-row" key={index}>
-              <div>
-                <input
-                  type="text"
-                  value={item.description}
-                  onChange={(e) =>
-                    handleChange(index, "description", e.target.value)
-                  }
-                  placeholder="Description"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  value={item.specification}
-                  onChange={(e) =>
-                    handleChange(index, "specification", e.target.value)
-                  }
-                  placeholder="Specification"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  value={item.qty}
-                  onChange={(e) => handleChange(index, "qty", e.target.value)}
-                  min="1"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  value={item.approxCost}
-                  onChange={(e) =>
-                    handleChange(index, "approxCost", e.target.value)
-                  }
-                  min="0"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  value={item.justification}
-                  onChange={(e) =>
-                    handleChange(index, "justification", e.target.value)
-                  }
-                  placeholder="Justification"
-                />
-              </div>
-              <div className="action-cell">
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteItem(index)}
-                >
-                  ❌
-                </button>
-              </div>
-            </div>
-          ))}
+      {/* Row-level items */}
+      <h3>Items</h3>
+      {header.DocumentLines.map((row, idx) => (
+        <div key={idx} className="row-item">
+          <input
+            type="text"
+            name="U_CODE"
+            value={row.U_CODE}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Item Code"
+          />
+          <input
+            type="text"
+            name="U_NAME"
+            value={row.U_NAME}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Item Name"
+          />
+          <input
+            type="text"
+            name="U_CMPS"
+            value={row.U_CMPS}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Components"
+          />
+          <input
+            type="number"
+            name="U_QNTY"
+            value={row.U_QNTY}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Quantity"
+          />
+          <input
+            type="number"
+            name="U_PRCE"
+            value={row.U_PRCE}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Price"
+          />
+          <input
+            type="number"
+            name="U_TOTL"
+            value={row.U_TOTL}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Total"
+          />
+          <input
+            type="text"
+            name="U_JUST"
+            value={row.U_JUST}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Justification"
+          />
+          <button type="button" onClick={() => removeRow(idx)}>
+            Remove
+          </button>
         </div>
-        <button className="add-btn" onClick={addItem}>
-          ➕ Add New Item
-        </button>
-      </div>
+      ))}
+      <button type="button" onClick={addRow}>
+        Add Item
+      </button>
 
-      {/* Section 3: Approval Info */}
-      <div className="card section-card">
-        <h3 className="section-title">Approval Information</h3>
-        <div className="form-grid">
-          <div className="form-field">
-            <label>Requested By</label>
-            <input type="text" />
-          </div>
-          <div className="form-field">
-            <label>Requested Date</label>
-            <input type="date" />
-          </div>
-          <div className="form-field">
-            <label>Verified By</label>
-            <input type="text" />
-          </div>
-          <div className="form-field">
-            <label>Verified Date</label>
-            <input type="date" />
-          </div>
-          <div className="form-field">
-            <label>Reviewed By</label>
-            <input type="text" />
-          </div>
-          <div className="form-field">
-            <label>Reviewed Date</label>
-            <input type="date" />
-          </div>
-        </div>
-      </div>
-    </div>
+      <button type="submit">Submit Request</button>
+    </form>
   );
 }
