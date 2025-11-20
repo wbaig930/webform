@@ -76,7 +76,6 @@ export default function PRForm() {
   };
 
   const handleSubmit = async (e) => {
-    debugger;
     e.preventDefault();
     const now = new Date();
     const formatTimeOnly = (date) => date.toTimeString().slice(0, 8); // "HH:mm:ss"
@@ -100,7 +99,6 @@ export default function PRForm() {
       })),
     };
 
-    debugger;
     try {
       console.log(JSON.stringify(payload, null, 2));
 
@@ -136,75 +134,129 @@ export default function PRForm() {
 
       {/* Header fields */}
       <div className="header-section">
-        <input
-          type="date"
-          name="CreateDate"
-          value={header.CreateDate}
-          onChange={handleHeaderChange}
-          placeholder="Create Date"
-        />
-        <input
-          type="date"
-          name="UpdateDate"
-          value={header.UpdateDate}
-          onChange={handleHeaderChange}
-          placeholder="Update Date"
-        />
-        <input
-          type="text"
-          name="Creator"
-          value={header.Creator}
-          onChange={handleHeaderChange}
-          placeholder="Creator"
-        />
-        <input
-          type="text"
-          name="Remark"
-          value={header.Remark}
-          onChange={handleHeaderChange}
-          placeholder="Remark"
-        />
-        <input
-          type="text"
-          name="U_ReqName"
-          value={header.U_ReqName}
-          onChange={handleHeaderChange}
-          placeholder="Requester Name"
-        />
-        <input
-          type="text"
-          name="Location"
-          value={header.Location}
-          onChange={handleHeaderChange}
-          placeholder="Location"
-        />
-        <input
-          type="text"
-          name="Site"
-          value={header.Site}
-          onChange={handleHeaderChange}
-          placeholder="Site"
-        />
-        <input
-          type="date"
-          name="U_DocDate"
-          value={header.U_DocDate}
-          onChange={handleHeaderChange}
-          placeholder="Document Date"
-        />
-        <input
-          type="date"
-          name="U_ReqDate"
-          value={header.U_ReqDate}
-          onChange={handleHeaderChange}
-          placeholder="Required Date"
-        />
+        <div className="form-group">
+          <label>Doc Entry</label>
+          <input
+            type="text"
+            name="DocEntry"
+            disabled
+            value={header.DocEntry || "Auto-generated"}
+            onChange={handleHeaderChange}
+            placeholder="Doc Entry"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Create Date</label>
+          <input
+            type="date"
+            name="CreateDate"
+            value={header.CreateDate}
+            onChange={handleHeaderChange}
+            placeholder="Create Date"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Update Date</label>
+          <input
+            type="date"
+            name="UpdateDate"
+            value={header.UpdateDate}
+            onChange={handleHeaderChange}
+            placeholder="Update Date"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Creator</label>
+          <input
+            type="text"
+            name="Creator"
+            value={header.Creator}
+            onChange={handleHeaderChange}
+            placeholder="Creator"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Remark</label>
+          <input
+            type="text"
+            name="Remark"
+            value={header.Remark}
+            onChange={handleHeaderChange}
+            placeholder="Remark"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Requester Name</label>
+          <input
+            type="text"
+            name="U_ReqName"
+            value={header.U_ReqName}
+            onChange={handleHeaderChange}
+            placeholder="Requester Name"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Location</label>
+          <input
+            type="text"
+            name="Location"
+            value={header.Location}
+            onChange={handleHeaderChange}
+            placeholder="Location"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Site</label>
+          <input
+            type="text"
+            name="Site"
+            value={header.Site}
+            onChange={handleHeaderChange}
+            placeholder="Site"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Document Date</label>
+          <input
+            type="date"
+            name="U_DocDate"
+            value={header.U_DocDate}
+            onChange={handleHeaderChange}
+            placeholder="Document Date"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Required Date</label>
+          <input
+            type="date"
+            name="U_ReqDate"
+            value={header.U_ReqDate}
+            onChange={handleHeaderChange}
+            placeholder="Required Date"
+          />
+        </div>
       </div>
 
       {/* Row-level items */}
       <h3>Items</h3>
       {header.DocumentLines.map((row, idx) => (
         <div key={idx} className="row-item">
+          <input 
+            type="text"
+            name="LineId"
+            value={row.LineId || idx + 1}
+            disabled
+            placeholder="Line ID"
+          />
           <input
             type="text"
             name="U_CODE"
@@ -253,6 +305,34 @@ export default function PRForm() {
             value={row.U_JUST}
             onChange={(e) => handleRowChange(idx, e)}
             placeholder="Justification"
+          />
+          <input
+            type="text"
+            name="U_ABGT "
+            value={row.U_ABGT}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Approval Budget"
+          />
+          <input
+            type="text"
+            name="U_BREF"
+            value={row.U_BREF}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Budget Reference"
+          />
+          <input
+            type="text"
+            name="U_PRJT"
+            value={row.U_PRJT}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Project"
+          />
+          <input
+            type="text"
+            name="U_FRWD"
+            value={row.U_FRWD}
+            onChange={(e) => handleRowChange(idx, e)}
+            placeholder="Forwarded To"
           />
           <button type="button" onClick={() => removeRow(idx)}>
             Remove
