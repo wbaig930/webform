@@ -13,30 +13,32 @@ export default function Dashboard({ username, onLogout }) {
 
   // Fetch PRs only for Approval User
   useEffect(() => {
-    console.log("Logged in as:", username);
+    // console.log("Logged in as:", username);
 
-    if (username === "Approval User") {
-      console.log("User is Approval User → fetching PRs...");
+    if (username === "APP") {
+      // console.log("User is Approval User → fetching PRs...");
       fetchPendingPRs();
     }
   }, [username]);
 
   const fetchPendingPRs = async () => {
-    try {
-      const res = await axios.get("https://localhost:7183/api/PRForm");
-      console.log("API Response:", res.data);
+  try {
+    const res = await axios.get("https://localhost:7183/api/PRForm");
 
-      let data = res.data;
-      if (!Array.isArray(data)) data = [data];
+    let data = res.data; // <-- declare FIRST
 
-      // Assuming the API returns an array of PR objects that include all necessary fields (like DocEntry)
-      setPrList(data);
-      console.log("PR list stored:", data);
-    } catch (err) {
-      console.error("PR fetch error:", err);
-      setPrList([]);
-    }
-  };
+    // console.log("Raw PR data:", JSON.stringify(data, null, 2));
+
+    if (!Array.isArray(data)) data = [data];
+
+    setPrList(data);
+    // console.log("PR list stored:", data);
+  } catch (err) {
+    console.error("PR fetch error:", err);
+    setPrList([]);
+  }
+};
+
 
   // 2. Handler to view PR details
   const handleViewDetails = (pr) => {
@@ -69,26 +71,24 @@ export default function Dashboard({ username, onLogout }) {
             <h2 className="dash-heading">Welcome to SAP Portal, {username}</h2>
 
             {/* Show only for Approval User */}
-            {username === "Approval User" && (
+            {username === "APP" && (
               <div className="pr-box-container">
                 <h3>Pending Purchase Requests</h3>
 
                 {prList.map((pr, idx) => (
                   <div key={idx} className="pr-box">
+
                     <p>
                       <strong>DocEntry:</strong> {pr.docEntry}
                     </p>
                     <p>
                       <strong>Request Name:</strong> {pr.creator}
                     </p>
-                    {/* ... other PR details ... */}
                     <p>
                       <strong>Designation:</strong> {pr.u_DESG || "N/A"}
                     </p>
 
-                    {/* BUTTONS */}
                     <div className="pr-actions">
-                      {/* 4. Update View Details button to use the handler */}
                       <button 
                         className="view-btn"
                         onClick={() => handleViewDetails(pr)}
